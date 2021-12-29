@@ -13,6 +13,7 @@ export interface PROPS_AUTHEN {
 export interface PROPS_PROFILE {
   id: number;
   nickName: string;
+  spicyResist: string;
   img: File | null;
 }
 
