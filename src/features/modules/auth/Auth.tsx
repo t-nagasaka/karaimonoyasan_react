@@ -1,6 +1,6 @@
 import React from "react";
 // 型のインポート
-import { AppDispatch } from "../../app/store";
+import { AppDispatch } from "../../../app/store";
 // useSelector: stateにアクセスするために必要
 // useDispatch: storeにアクセスするために必要
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +13,10 @@ import { Formik } from "formik";
 import { object, string } from "yup";
 // マテリアルUI使用
 import { TextField, Button, CircularProgress } from "@material-ui/core";
-import { fetchAsyncGetPosts, fetchAsyncGetComments } from "../post/postSlice";
+import {
+  fetchAsyncGetPosts,
+  fetchAsyncGetComments,
+} from "../../slices/postSlice";
 
 import {
   // useSelectorで使用
@@ -33,7 +36,7 @@ import {
   fetchAsyncGetMyProf,
   fetchAsyncGetProfs,
   fetchAsyncCreateProf,
-} from "../slices/authSlice";
+} from "../../slices/authSlice";
 
 // modalのスタイルを定義
 const customStyles = {
