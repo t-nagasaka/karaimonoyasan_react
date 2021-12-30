@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Auth from "../auth/Auth";
 
-import styles from "../modules/main/Main.module.css";
+import styles from "./Main.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 
@@ -40,8 +40,8 @@ import {
 } from "../../slices/postSlice";
 
 import Post from "../post/Post";
-import EditProfile from "./EditProfile";
-import NewPost from "./NewPost";
+// import EditProfile from "./EditProfile";
+// import NewPost from "./NewPost";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -99,8 +99,8 @@ const Main: React.FC = () => {
   return (
     <div>
       <Auth />
-      <EditProfile />
-      <NewPost />
+      {/* <EditProfile />
+      <NewPost /> */}
       <div className={styles.main_header}>
         <h1 className={styles.main_title}>karaimonoyasan</h1>
         {profile?.nickName ? (
