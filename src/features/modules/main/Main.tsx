@@ -40,8 +40,8 @@ import {
 } from "../../slices/postSlice";
 
 import Post from "../post/Post";
-// import EditProfile from "./EditProfile";
-// import NewPost from "./NewPost";
+import EditProfile from "../edits/EditProfile";
+import NewPost from "./NewPost";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
