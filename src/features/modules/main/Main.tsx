@@ -30,18 +30,18 @@ import {
   fetchAsyncGetProfs,
 } from "../../slices/authSlice";
 
-// import {
-//   selectPosts,
-//   selectIsLoadingPost,
-//   setOpenNewPost,
-//   resetOpenNewPost,
-//   fetchAsyncGetPosts,
-//   fetchAsyncGetComments,
-// } from "./postSlice";
+import {
+  selectPosts,
+  selectIsLoadingPost,
+  setOpenNewPost,
+  resetOpenNewPost,
+  fetchAsyncGetPosts,
+  fetchAsyncGetComments,
+} from "../../slices/postSlice";
 
-// import Post from "../post/Post";
-// import EditProfile from "./EditProfile";
-// import NewPost from "./NewPost";
+import Post from "../post/Post";
+import EditProfile from "./EditProfile";
+import NewPost from "./NewPost";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -102,7 +102,7 @@ const Main: React.FC = () => {
       <EditProfile />
       <NewPost />
       <div className={styles.main_header}>
-        <h1 className={styles.main_title}>SNS clone</h1>
+        <h1 className={styles.main_title}>karaimonoyasan</h1>
         {profile?.nickName ? (
           <>
             <button
