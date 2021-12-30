@@ -13,8 +13,11 @@ const apiUrlComment = `${process.env.REACT_APP_DEV_API_URL}api/comment/`;
 
 export const fetchAsyncGetPosts = createAsyncThunk("post/get", async () => {
   const res = await axios.get(apiUrlPost, {
+    // headers: {
+    //   Authorization: `JWT ${localStorage.localJWT}`,
+    // },
     headers: {
-      Authorization: `JWT ${localStorage.localJWT}`,
+      "Content-Type": "application/json",
     },
   });
   return res.data;

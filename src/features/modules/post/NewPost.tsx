@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import styles from "../main/Main.module.css";
-
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
+
+import styles from "../main/Main.module.css";
 
 import { File } from "../../types/editProfile";
 
 import {
-  editNickname,
-  selectProfile,
-  selectOpenProfile,
-  resetOpenProfile,
-  fetchCredStart,
-  fetchCredEnd,
-  fetchAsyncUpdateProf,
-} from "../../slices/authSlice";
+  selectOpenNewPost,
+  resetOpenNewPost,
+  fetchPostStart,
+  fetchPostEnd,
+  fetchAsyncNewPost,
+} from "../../slices/postSlice";
 
 import { Button, TextField, IconButton } from "@material-ui/core";
 import { MdAddAPhoto } from "react-icons/md";
@@ -33,50 +31,47 @@ const customStyles = {
   },
 };
 
-const EditProfile: React.FC = () => {
+const NewPost: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const openProfile = useSelector(selectOpenProfile);
-  const profile = useSelector(selectProfile);
+  const openNewPost = useSelector(selectOpenNewPost);
+
   const [image, setImage] = useState<File | null>(null);
-
-  const updateProfile = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    const packet = {
-      id: profile.id,
-      nickName: profile.nickName,
-      spicyResist: profile.spicyResist,
-      img: image,
-    };
-
-    await dispatch(fetchCredStart());
-    await dispatch(fetchAsyncUpdateProf(packet));
-    await dispatch(fetchCredEnd());
-    await dispatch(resetOpenProfile());
-  };
+  const [title, setTitle] = useState("");
+  const [spicyResist, setSpicyResist] = useState("");
 
   const handlerEditPicture = () => {
     const fileInput = document.getElementById("imageInput");
     fileInput?.click();
   };
 
+  const newPost = async (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    const packet = { title: title, spicyResist: spicyResist, img: image };
+    await dispatch(fetchPostStart());
+    await dispatch(fetchAsyncNewPost(packet));
+    await dispatch(fetchPostEnd());
+    setTitle("");
+    setImage(null);
+    dispatch(resetOpenNewPost());
+  };
+
   return (
     <>
       <Modal
-        isOpen={openProfile}
+        isOpen={openNewPost}
         onRequestClose={async () => {
-          await dispatch(resetOpenProfile());
+          await dispatch(resetOpenNewPost());
         }}
         style={customStyles}
       >
         <form className={styles.main_signUp}>
-          <h1 className={styles.main_title}>Profile Edit</h1>
+          <h1 className={styles.main_title}>New Post</h1>
 
           <br />
           <TextField
-            placeholder="nickname"
+            placeholder="Please enter caption"
             type="text"
-            value={profile?.nickName}
-            onChange={(e) => dispatch(editNickname(e.target.value))}
+            onChange={(e) => setTitle(e.target.value)}
           />
 
           <input
@@ -91,13 +86,12 @@ const EditProfile: React.FC = () => {
           </IconButton>
           <br />
           <Button
-            disabled={!profile?.nickName}
+            disabled={!title || !image}
             variant="contained"
             color="primary"
-            type="submit"
-            onClick={updateProfile}
+            onClick={newPost}
           >
-            Update
+            New post
           </Button>
         </form>
       </Modal>
@@ -105,4 +99,4 @@ const EditProfile: React.FC = () => {
   );
 };
 
-export default EditProfile;
+export default NewPost;
