@@ -1,3 +1,9 @@
+// 型情報をBlobからエクステンド
+export interface File extends Blob {
+  readonly lastModified: number;
+  readonly name: string;
+}
+
 export interface PROPS_NEWPOST {
   title: string;
   spicyResist: string;
