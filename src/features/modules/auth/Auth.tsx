@@ -4,7 +4,7 @@ import { AppDispatch } from "../../../app/store";
 // useSelector: stateにアクセスするために必要
 // useDispatch: storeにアクセスするために必要
 import { useSelector, useDispatch } from "react-redux";
-import styles from "./Auth.module.css";
+import styles from "./Auth.module.scss";
 // モーダル使用
 import Modal from "react-modal";
 // 入力フォーム作成で使用

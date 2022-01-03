@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Post.module.css";
+import styles from "./Post.module.scss";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Divider, Checkbox } from "@material-ui/core";
