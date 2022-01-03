@@ -1,5 +1,5 @@
-import styles from "./App.module.css";
-import "./App.module.css";
+import styles from "./App.module.scss";
+import "./App.module.scss";
 import Main from "./features/modules/main/Main";
 
 function App() {

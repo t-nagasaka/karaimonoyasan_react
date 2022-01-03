@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import styles from "../main/Main.module.css";
+import styles from "../main/Main.module.scss";
 
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";

@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Auth from "../auth/Auth";
 
-import styles from "./Main.module.css";
+import MuiPagination from "@material-ui/lab/Pagination";
+
+import styles from "./Main.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
+
+import ReactPaginate from "react-paginate";
 
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -78,6 +82,22 @@ const Main: React.FC = () => {
   const posts = useSelector(selectPosts);
   const isLoadingPost = useSelector(selectIsLoadingPost);
   const isLoadingAuth = useSelector(selectIsLoadingAuth);
+  const [offset, setOffset] = useState(0);
+  const perPage: number = 3;
+
+  //ページ番号
+  const [page, setPage] = useState(1);
+
+  const Pagination = withStyles({
+    root: {
+      display: "inline-block", //中央寄せのためインラインブロックに変更
+    },
+  })(MuiPagination);
+
+  let handlePageChange = (data: any) => {
+    let pageNumber = data["selected"];
+    setOffset(pageNumber * perPage);
+  };
 
   useEffect(() => {
     const fetchBootLoader = async () => {
@@ -98,6 +118,7 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchAsyncGetPosts());
+    dispatch(fetchAsyncGetProfs());
   }, []);
 
   return (
@@ -173,29 +194,41 @@ const Main: React.FC = () => {
           </div>
         )}
       </div>
-      {profile?.nickName && (
-        <>
-          <div className={styles.main_posts}>
-            <Grid container spacing={4}>
-              {posts
-                .slice(0)
-                .reverse()
-                .map((post) => (
-                  <Grid key={post.id} item xs={12} md={4}>
-                    <Post
-                      postId={post.id}
-                      title={post.title}
-                      loginId={profile.userProfile}
-                      userPost={post.userPost}
-                      imageUrl={post.img}
-                      liked={post.liked}
-                    />
-                  </Grid>
-                ))}
-            </Grid>
+      <>
+        <div className={styles.main_posts}>
+          <Grid container spacing={4}>
+            {posts
+              .slice(0)
+              .reverse()
+              .map((post) => (
+                <Grid key={post.id} item xs={12} md={4}>
+                  <Post
+                    postId={post.id}
+                    title={post.title}
+                    loginId={profile.userProfile}
+                    userPost={post.userPost}
+                    imageUrl={post.img}
+                    liked={post.liked}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+          <div
+            style={{
+              textAlign: "center",
+              paddingTop: "50px",
+              paddingBottom: "50px",
+            }}
+          >
+            <Pagination
+              count={Math.ceil(posts.length / perPage)} //総ページ数
+              color="primary" //ページネーションの色
+              onChange={handlePageChange} //変更されたときに走る関数。第2引数にページ番号が入る
+              page={page} //現在のページ番号
+            />
           </div>
-        </>
-      )}
+        </div>
+      </>
     </div>
   );
 };
