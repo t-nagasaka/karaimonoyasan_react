@@ -42,6 +42,7 @@ import {
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(119, 119, 119, 0.5)",
+    zIndex: 1000,
   },
   content: {
     top: "55%",

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Auth from "../auth/Auth";
 
-import MuiPagination from "@material-ui/lab/Pagination";
-
 import styles from "./Main.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
@@ -83,16 +81,7 @@ const Main: React.FC = () => {
   const isLoadingPost = useSelector(selectIsLoadingPost);
   const isLoadingAuth = useSelector(selectIsLoadingAuth);
   const [offset, setOffset] = useState(0);
-  const perPage: number = 3;
-
-  //ページ番号
-  const [page, setPage] = useState(1);
-
-  const Pagination = withStyles({
-    root: {
-      display: "inline-block", //中央寄せのためインラインブロックに変更
-    },
-  })(MuiPagination);
+  const perPage: number = 6;
 
   let handlePageChange = (data: any) => {
     let pageNumber = data["selected"];
@@ -194,43 +183,46 @@ const Main: React.FC = () => {
           </div>
         )}
       </div>
-      <>
-        <div className={styles.main_posts}>
-          <Grid container spacing={4}>
-            {posts
-              .slice(0)
-              .reverse()
-              .map((post) => (
-                <Grid key={post.id} item xs={12} md={4}>
-                  <Post
-                    postId={post.id}
-                    title={post.title}
-                    loginId={profile.userProfile}
-                    userPost={post.userPost}
-                    imageUrl={post.img}
-                    liked={post.liked}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-          <div
-            style={{
-              textAlign: "center",
-              paddingTop: "50px",
-              paddingBottom: "50px",
-            }}
-          >
-            <Pagination
-              count={Math.ceil(posts.length / perPage)} //総ページ数
-              color="primary" //ページネーションの色
-              onChange={handlePageChange} //変更されたときに走る関数。第2引数にページ番号が入る
-              page={page} //現在のページ番号
-            />
-          </div>
-        </div>
-      </>
+      <div className={styles.main_posts}>
+        <Grid container spacing={4}>
+          {posts
+            .slice(offset, offset + perPage)
+            .reverse()
+            .map((post) => (
+              <Grid key={post.id} item xs={12} md={3}>
+                <Post
+                  postId={post.id}
+                  title={post.title}
+                  loginId={profile.userProfile}
+                  userPost={post.userPost}
+                  imageUrl={post.img}
+                  liked={post.liked}
+                />
+              </Grid>
+            ))}
+        </Grid>
+        <ReactPaginate
+          previousLabel="<" //前のページ番号に戻すリンクのテキスト
+          nextLabel=">" //次のページに進むボタンのテキスト
+          breakLabel="..." // ページがたくさんあるときに表示しない番号に当たる部分をどう表示するか
+          pageCount={Math.ceil(posts.length / perPage)} // 全部のページ数。端数の場合も考えて切り上げに。
+          marginPagesDisplayed={2} // 一番最初と最後を基準にして、そこからいくつページ数を表示するか
+          pageRangeDisplayed={5} // アクティブなページを基準にして、そこからいくつページ数を表示するか
+          onPageChange={handlePageChange} // クリック時のfunction
+          containerClassName="pagination" //ページネーションリンクの親要素のクラス名
+          // pageClassName="page-item" //各子要素(li要素)のクラス名
+          // pageLinkClassName="page-link" //ページネーションのリンクのクラス名
+          activeClassName="active" //今いるページ番号のクラス名。今いるページの番号だけ太字にしたりできます
+          previousClassName="pagination__previous" // '<'の親要素(li)のクラス名
+          nextClassName="pagination__next" //'>'の親要素(li)のクラス名
+          previousLinkClassName="page-link" //'<'のリンクのクラス名
+          // nextLinkClassName="page-link" //'>'のリンクのクラス名
+          disabledClassName="pagination__disabled" //先頭 or 末尾に行ったときにそれ以上戻れ(進め)なくするためのクラス
+          // breakClassName="page-item" // 上記の「…」のクラス名
+          // breakLinkClassName="page-link" // 「…」の中のリンクにつけるクラス
+        />
+      </div>
     </div>
   );
 };
-
 export default Main;
