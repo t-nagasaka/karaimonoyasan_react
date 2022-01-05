@@ -141,6 +141,9 @@ export const authSlice = createSlice({
     editNickname(state, action) {
       state.myProfile.nickName = action.payload;
     },
+    editUserProfile(state) {
+      state.myProfile.userProfile = 0;
+    },
     editSpicyResist(state, action) {
       state.myProfile.spicyResist = action.payload;
     },
@@ -177,6 +180,7 @@ export const {
   setOpenProfile,
   resetOpenProfile,
   editNickname,
+  editUserProfile,
   editSpicyResist,
 } = authSlice.actions;
 

@@ -1,3 +1,12 @@
+.main_test {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+}
+
 .main_title {
   font-family: "Playball", cursive;
   font-weight: normal;
@@ -24,6 +33,7 @@
   z-index: 1;
   justify-content: space-between;
 }
+
 .main_btnModal {
   background-color: transparent;
   color: gray;
@@ -40,6 +50,8 @@
 }
 .main_posts {
   padding: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 .main_progress {
   margin-top: 15px;
@@ -47,15 +59,18 @@
   justify-content: center;
 }
 
-.pagination {
+ul {
+  list-style: none;
   display: flex;
-  margin: 0 auto;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
 
   & > li {
-    margin: 0 12px;
+    margin: 0 20px;
     & > a {
       position: relative;
-      font-size: 0.8rem;
+      font-size: 1rem;
       width: 24px;
       height: 24px;
       outline: none;
@@ -73,16 +88,20 @@
         border-radius: 50%;
         transform: translate(-50%, -50%);
         z-index: -100;
+        .active {
+          background-color: red;
+        }
       }
 
       &:hover {
         &::before {
-          background-color: rgba(255, 255, 255, 0.6);
+          background-color: rgba(139, 139, 139, 0.6);
+          transition: all 0.5s ease-out;
         }
       }
     }
 
-    &.active {
+    &:active {
       & > a::before {
         background-color: white;
       }
@@ -99,4 +118,78 @@
   &__disabled {
     display: none;
   }
+}
+
+.main_editBtnModal {
+  /*波紋の基点とするためrelativeを指定*/
+  position: relative;
+  /*波紋の形状*/
+  display: inline-block;
+  // background: #333;
+  font-size: 25px;
+  padding-top: 5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: #ccc;
+  outline: none;
+  cursor: pointer;
+  /*アニメーションの設定*/
+  transition: all 0.3s;
+  /*hoverした際の背景色の設定*/
+  &:hover {
+    background: #666;
+  }
+
+  /*波形を2つ設定*/
+  &::after,
+  &::before {
+    content: "";
+    /*絶対配置で波形の位置を決める*/
+    position: absolute;
+    left: -27%;
+    top: -28%;
+    /*波形の形状*/
+    border: 1px solid #333;
+    width: 150%;
+    height: 150%;
+    border-radius: 50%;
+    /*はじめは不透明*/
+    opacity: 1;
+    /*ループするアニメーションの設定*/
+    animation: 1s circleanime linear infinite;
+  }
+
+  /*波形の2つ目は0.5秒遅らせてアニメーション*/
+  &::before {
+    animation-delay: 0.5s;
+  }
+
+  /*中央矢印*/
+  &span::after {
+    content: "";
+    /*絶対配置で矢印の位置を決める*/
+    position: absolute;
+    top: 38%;
+    left: 45%;
+    /*矢印の形状*/
+    border: 14px solid transparent;
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    border-left-color: #fff;
+  }
+}
+/*波形のアニメーション*/
+@keyframes circleanime {
+  0% {
+    transform: scale(0.68);
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.main_profile_img {
+  text-align: center;
 }

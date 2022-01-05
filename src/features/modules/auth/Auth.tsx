@@ -1,8 +1,6 @@
 import React from "react";
 // 型のインポート
 import { AppDispatch } from "../../../app/store";
-// useSelector: stateにアクセスするために必要
-// useDispatch: storeにアクセスするために必要
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Auth.module.scss";
 // モーダル使用
@@ -42,6 +40,7 @@ import {
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(119, 119, 119, 0.5)",
+    zIndex: 1000,
   },
   content: {
     top: "55%",
