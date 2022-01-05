@@ -27,7 +27,7 @@ const customStyles = {
     left: "50%",
 
     width: 280,
-    height: 220,
+    height: 280,
     padding: "50px",
 
     transform: "translate(-50%, -50%)",
@@ -60,6 +60,7 @@ const EditProfile: React.FC = () => {
     const fileInput = document.getElementById("imageInput");
     fileInput?.click();
   };
+
   const handlerResetPicture = () => {
     setImage(null);
     setFileName("");
@@ -70,9 +71,7 @@ const EditProfile: React.FC = () => {
     <>
       <Modal
         isOpen={openProfile}
-        onRequestClose={async () => {
-          await dispatch(resetOpenProfile());
-        }}
+        onRequestClose={handlerResetPicture}
         style={customStyles}
       >
         <form className={styles.main_signUp}>
@@ -110,13 +109,8 @@ const EditProfile: React.FC = () => {
           >
             Update
           </Button>
-          <Button
-            // disabled={!profile?.nickName}
-            // variant="contained"
-            color="secondary"
-            type="reset"
-            onClick={handlerResetPicture}
-          >
+          <br />
+          <Button color="secondary" type="reset" onClick={handlerResetPicture}>
             Cancel
           </Button>
         </form>
