@@ -1,8 +1,6 @@
 import React from "react";
 // 型のインポート
 import { AppDispatch } from "../../../app/store";
-// useSelector: stateにアクセスするために必要
-// useDispatch: storeにアクセスするために必要
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Auth.module.scss";
 // モーダル使用

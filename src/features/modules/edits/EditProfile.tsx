@@ -19,6 +19,7 @@ import {
 
 import { Button, TextField, IconButton } from "@material-ui/core";
 import { MdAddAPhoto } from "react-icons/md";
+import { string } from "yup";
 
 const customStyles = {
   content: {
@@ -38,6 +39,7 @@ const EditProfile: React.FC = () => {
   const openProfile = useSelector(selectOpenProfile);
   const profile = useSelector(selectProfile);
   const [image, setImage] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<String>("");
 
   const updateProfile = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -57,6 +59,11 @@ const EditProfile: React.FC = () => {
   const handlerEditPicture = () => {
     const fileInput = document.getElementById("imageInput");
     fileInput?.click();
+  };
+  const handlerResetPicture = () => {
+    setImage(null);
+    setFileName("");
+    dispatch(resetOpenProfile());
   };
 
   return (
@@ -83,12 +90,16 @@ const EditProfile: React.FC = () => {
             type="file"
             id="imageInput"
             hidden={true}
-            onChange={(e) => setImage(e.target.files![0])}
+            onChange={(e) => {
+              setImage(e.target.files![0]);
+              setFileName(e.target.files![0].name);
+            }}
           />
           <br />
           <IconButton onClick={handlerEditPicture}>
             <MdAddAPhoto />
           </IconButton>
+          <p className={styles.main_profile_img}>{fileName}</p>
           <br />
           <Button
             disabled={!profile?.nickName}
@@ -98,6 +109,15 @@ const EditProfile: React.FC = () => {
             onClick={updateProfile}
           >
             Update
+          </Button>
+          <Button
+            // disabled={!profile?.nickName}
+            // variant="contained"
+            color="secondary"
+            type="reset"
+            onClick={handlerResetPicture}
+          >
+            Cancel
           </Button>
         </form>
       </Modal>

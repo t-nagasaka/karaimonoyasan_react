@@ -10,7 +10,9 @@ import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 
-import { selectProfiles } from "../../slices/authSlice";
+import { selectProfile, selectProfiles } from "../../slices/authSlice";
+
+import { BsTrash } from "react-icons/bs";
 
 import {
   selectComments,
@@ -41,6 +43,7 @@ const Post: React.FC<PROPS_POST> = ({
   const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const profiles = useSelector(selectProfiles);
+  const myProf = useSelector(selectProfile);
   const comments = useSelector(selectComments);
   const [text, setText] = useState("");
 
@@ -79,9 +82,11 @@ const Post: React.FC<PROPS_POST> = ({
         <div className={styles.post_header}>
           <Avatar className={styles.post_avatar} src={prof[0]?.img} />
           <h3>{prof[0]?.nickName}</h3>
+          <button className={styles.taskIcon}>
+            {myProf.userProfile === userPost ? <BsTrash /> : ""}
+          </button>
         </div>
         <img className={styles.post_image} src={imageUrl} alt="" />
-
         <h4 className={styles.post_text}>
           <Checkbox
             className={styles.post_checkBox}
@@ -124,6 +129,9 @@ const Post: React.FC<PROPS_POST> = ({
                 </strong>
                 {comment.text}
               </p>
+              <button className={styles.commentTrash}>
+                {myProf.userProfile === comment.userComment ? <BsTrash /> : ""}
+              </button>
             </div>
           ))}
         </div>

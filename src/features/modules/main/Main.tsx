@@ -17,9 +17,11 @@ import {
 } from "@material-ui/core";
 
 import { MdAddAPhoto } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 import {
   editNickname,
+  editUserProfile,
   selectProfile,
   selectIsLoadingAuth,
   setOpenSignIn,
@@ -117,22 +119,25 @@ const Main: React.FC = () => {
       <NewPost />
       <div className={styles.main_header}>
         <h1 className={styles.main_title}>karaimonoyasan</h1>
-        {profile?.nickName ? (
+        <div className={styles.main_test}>
+          <button
+            className={styles.main_editBtnModal}
+            onClick={() => {
+              dispatch(setOpenNewPost());
+              dispatch(resetOpenProfile());
+            }}
+          >
+            <FaEdit />
+          </button>
+        </div>
+        {profile?.userProfile !== 0 ? (
           <>
-            <button
-              className={styles.main_btnModal}
-              onClick={() => {
-                dispatch(setOpenNewPost());
-                dispatch(resetOpenProfile());
-              }}
-            >
-              <MdAddAPhoto />
-            </button>
             <div className={styles.main_logout}>
               {(isLoadingPost || isLoadingAuth) && <CircularProgress />}
               <Button
                 onClick={() => {
                   localStorage.removeItem("localJWT");
+                  dispatch(editUserProfile());
                   dispatch(editNickname(""));
                   dispatch(resetOpenProfile());
                   dispatch(resetOpenNewPost());
@@ -184,12 +189,13 @@ const Main: React.FC = () => {
         )}
       </div>
       <div className={styles.main_posts}>
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           {posts
-            .slice(offset, offset + perPage)
+            .slice()
             .reverse()
+            .slice(offset, offset + perPage)
             .map((post) => (
-              <Grid key={post.id} item xs={12} md={3}>
+              <Grid key={post.id} item xs={12} sm={6} md={4} lg={3}>
                 <Post
                   postId={post.id}
                   title={post.title}
