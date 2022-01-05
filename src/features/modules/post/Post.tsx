@@ -10,7 +10,11 @@ import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 
-import { selectProfile, selectProfiles } from "../../slices/authSlice";
+import {
+  selectProfile,
+  selectProfiles,
+  setOpenSignUp,
+} from "../../slices/authSlice";
 
 import { BsTrash } from "react-icons/bs";
 
@@ -56,24 +60,33 @@ const Post: React.FC<PROPS_POST> = ({
   });
 
   const postComment = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    const packet = { text: text, post: postId };
-    await dispatch(fetchPostStart());
-    await dispatch(fetchAsyncPostComment(packet));
-    await dispatch(fetchPostEnd());
-    setText("");
+    if (loginId !== 0) {
+      e.preventDefault();
+      const packet = { text: text, post: postId };
+      await dispatch(fetchPostStart());
+      await dispatch(fetchAsyncPostComment(packet));
+      await dispatch(fetchPostEnd());
+      setText("");
+    } else {
+      setText("");
+      dispatch(setOpenSignUp());
+    }
   };
 
   const handlerLiked = async () => {
-    const packet = {
-      id: postId,
-      title: title,
-      current: liked,
-      new: loginId,
-    };
-    await dispatch(fetchPostStart());
-    await dispatch(fetchAsyncPatchLiked(packet));
-    await dispatch(fetchPostEnd());
+    if (loginId !== 0) {
+      const packet = {
+        id: postId,
+        title: title,
+        current: liked,
+        new: loginId,
+      };
+      await dispatch(fetchPostStart());
+      await dispatch(fetchAsyncPatchLiked(packet));
+      await dispatch(fetchPostEnd());
+    } else {
+      dispatch(setOpenSignUp());
+    }
   };
 
   if (title) {
@@ -147,7 +160,7 @@ const Post: React.FC<PROPS_POST> = ({
           <button
             disabled={!text.length}
             className={styles.post_button}
-            type="submit"
+            type={loginId !== 0 ? "submit" : "button"}
             onClick={postComment}
           >
             Post

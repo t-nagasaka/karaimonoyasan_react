@@ -16,7 +16,6 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 
-import { MdAddAPhoto } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 import {
@@ -88,6 +87,7 @@ const Main: React.FC = () => {
   let handlePageChange = (data: any) => {
     let pageNumber = data["selected"];
     setOffset(pageNumber * perPage);
+    window.scroll({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -123,8 +123,12 @@ const Main: React.FC = () => {
           <button
             className={styles.main_editBtnModal}
             onClick={() => {
-              dispatch(setOpenNewPost());
-              dispatch(resetOpenProfile());
+              if (profile?.userProfile !== 0) {
+                dispatch(setOpenNewPost());
+                dispatch(resetOpenProfile());
+              } else {
+                dispatch(setOpenSignUp());
+              }
             }}
           >
             <FaEdit />
