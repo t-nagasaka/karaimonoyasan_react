@@ -7,10 +7,17 @@
   -ms-transform: translateX(-50%);
 }
 
+.main_app_name {
+  font-family: "Playball", cursive;
+  font-weight: normal;
+  text-align: center;
+}
+
 .main_title {
   font-family: "Playball", cursive;
   font-weight: normal;
   text-align: center;
+  padding-bottom: 20px;
 }
 .main_signUp {
   display: flex;

@@ -118,7 +118,7 @@ const Main: React.FC = () => {
       <EditProfile />
       <NewPost />
       <div className={styles.main_header}>
-        <h1 className={styles.main_title}>karaimonoyasan</h1>
+        <h1 className={styles.main_app_name}>karaimonoyasan</h1>
         <div className={styles.main_test}>
           <button
             className={styles.main_editBtnModal}
