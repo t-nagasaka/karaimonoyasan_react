@@ -11,6 +11,10 @@
   font-family: "Playball", cursive;
   font-weight: normal;
   text-align: center;
+  font-size: 32px;
+  background-color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .main_title {
@@ -75,6 +79,7 @@ ul {
 
   & > li {
     margin: 0 20px;
+
     & > a {
       position: relative;
       font-size: 1rem;
@@ -95,9 +100,6 @@ ul {
         border-radius: 50%;
         transform: translate(-50%, -50%);
         z-index: -100;
-        .active {
-          background-color: red;
-        }
       }
 
       &:hover {

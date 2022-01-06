@@ -16,7 +16,6 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 
-import { MdAddAPhoto } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 import {
@@ -88,6 +87,7 @@ const Main: React.FC = () => {
   let handlePageChange = (data: any) => {
     let pageNumber = data["selected"];
     setOffset(pageNumber * perPage);
+    window.scroll({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -110,6 +110,7 @@ const Main: React.FC = () => {
   useEffect(() => {
     dispatch(fetchAsyncGetPosts());
     dispatch(fetchAsyncGetProfs());
+    dispatch(fetchAsyncGetComments());
   }, []);
 
   return (
@@ -118,13 +119,24 @@ const Main: React.FC = () => {
       <EditProfile />
       <NewPost />
       <div className={styles.main_header}>
-        <h1 className={styles.main_app_name}>karaimonoyasan</h1>
+        <button
+          className={styles.main_app_name}
+          onClick={() => {
+            window.scroll({ top: 0, behavior: "smooth" });
+          }}
+        >
+          karaimonoyasan
+        </button>
         <div className={styles.main_test}>
           <button
             className={styles.main_editBtnModal}
             onClick={() => {
-              dispatch(setOpenNewPost());
-              dispatch(resetOpenProfile());
+              if (profile?.userProfile !== 0) {
+                dispatch(setOpenNewPost());
+                dispatch(resetOpenProfile());
+              } else {
+                dispatch(setOpenSignUp());
+              }
             }}
           >
             <FaEdit />
