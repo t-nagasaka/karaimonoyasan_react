@@ -22,8 +22,12 @@ import {
   selectComments,
   fetchPostStart,
   fetchPostEnd,
+  fetchAsyncGetPosts,
   fetchAsyncPostComment,
+  fetchAsyncGetComments,
   fetchAsyncPatchLiked,
+  fetchAsyncDeletePost,
+  fetchAsyncDeleteComment,
 } from "../../slices/postSlice";
 
 import { PROPS_POST } from "../../types/PostType";
@@ -90,11 +94,15 @@ const Post: React.FC<PROPS_POST> = ({
   };
 
   const deleteOwnPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e.currentTarget.value);
+    const postId = e.currentTarget.value;
+    await dispatch(fetchAsyncDeletePost(postId));
+    await dispatch(fetchAsyncGetPosts());
   };
 
   const deleteOwnComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e.currentTarget.value);
+    const commentId = e.currentTarget.value;
+    await dispatch(fetchAsyncDeleteComment(commentId));
+    await dispatch(fetchAsyncGetComments());
   };
 
   if (title) {

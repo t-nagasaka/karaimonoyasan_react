@@ -46,7 +46,7 @@ const customStyles = {
     top: "55%",
     left: "50%",
     width: 280,
-    height: 350,
+    height: 430,
     padding: "50px",
     transform: "translate(-50%, -50%)",
   },
@@ -62,6 +62,11 @@ const Auth: React.FC = () => {
   // isLoadingAuthのstateを取得することができる
   const isLoadingAuth = useSelector(selectIsLoadingAuth);
   const dispatch: AppDispatch = useDispatch();
+
+  const handlerResetModal = () => {
+    dispatch(resetOpenSignUp());
+    dispatch(resetOpenSignIn());
+  };
 
   return (
     <>
@@ -151,6 +156,13 @@ const Auth: React.FC = () => {
                     Register
                   </Button>
                   <br />
+                  <Button
+                    color="secondary"
+                    type="reset"
+                    onClick={handlerResetModal}
+                  >
+                    Cancel
+                  </Button>
                   <br />
                   <span
                     className={styles.auth_text}
@@ -249,6 +261,13 @@ const Auth: React.FC = () => {
                     Login
                   </Button>
                   <br />
+                  <Button
+                    color="secondary"
+                    type="reset"
+                    onClick={handlerResetModal}
+                  >
+                    Cancel
+                  </Button>
                   <br />
                   <span
                     className={styles.auth_text}

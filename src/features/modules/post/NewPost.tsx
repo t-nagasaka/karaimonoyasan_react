@@ -24,7 +24,7 @@ const customStyles = {
     left: "50%",
 
     width: 280,
-    height: 280,
+    height: 320,
     padding: "50px",
 
     transform: "translate(-50%, -50%)",
