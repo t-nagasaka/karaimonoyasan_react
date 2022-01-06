@@ -89,15 +89,31 @@ const Post: React.FC<PROPS_POST> = ({
     }
   };
 
+  const deleteOwnPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e.currentTarget.value);
+  };
+
+  const deleteOwnComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e.currentTarget.value);
+  };
+
   if (title) {
     return (
       <div className={styles.post}>
         <div className={styles.post_header}>
           <Avatar className={styles.post_avatar} src={prof[0]?.img} />
           <h3>{prof[0]?.nickName}</h3>
-          <button className={styles.taskIcon}>
-            {myProf.userProfile === userPost ? <BsTrash /> : ""}
-          </button>
+          {myProf.userProfile === userPost ? (
+            <button
+              className={styles.taskIcon}
+              onClick={deleteOwnPost}
+              value={postId}
+            >
+              <BsTrash />
+            </button>
+          ) : (
+            ""
+          )}
         </div>
         <img className={styles.post_image} src={imageUrl} alt="" />
         <h4 className={styles.post_text}>
@@ -142,9 +158,17 @@ const Post: React.FC<PROPS_POST> = ({
                 </strong>
                 {comment.text}
               </p>
-              <button className={styles.commentTrash}>
-                {myProf.userProfile === comment.userComment ? <BsTrash /> : ""}
-              </button>
+              {myProf.userProfile === comment.userComment ? (
+                <button
+                  className={styles.commentTrash}
+                  onClick={deleteOwnComment}
+                  value={comment.id}
+                >
+                  <BsTrash />
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           ))}
         </div>
