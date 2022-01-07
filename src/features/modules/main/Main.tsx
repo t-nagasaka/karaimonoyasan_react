@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 
 import { FaEdit } from "react-icons/fa";
+import MediaQuery from "react-responsive";
 
 import {
   editNickname,
@@ -118,88 +119,175 @@ const Main: React.FC = () => {
       <Auth />
       <EditProfile />
       <NewPost />
-      <div className={styles.main_header}>
-        <button
-          className={styles.main_app_name}
-          onClick={() => {
-            window.scroll({ top: 0, behavior: "smooth" });
-          }}
-        >
-          karaimonoyasan
-        </button>
-        <div className={styles.main_test}>
+      <MediaQuery query="(max-width: 420px)">
+        <div className={styles.main_mobileHeader}>
           <button
-            className={styles.main_editBtnModal}
+            className={styles.main_app_name}
             onClick={() => {
-              if (profile?.userProfile !== 0) {
-                dispatch(setOpenNewPost());
-                dispatch(resetOpenProfile());
-              } else {
-                dispatch(setOpenSignUp());
-              }
+              window.scroll({ top: 0, behavior: "smooth" });
             }}
           >
-            <FaEdit />
+            karaimonoyasan
           </button>
-        </div>
-        {profile?.userProfile !== 0 ? (
-          <>
-            <div className={styles.main_logout}>
-              {(isLoadingPost || isLoadingAuth) && <CircularProgress />}
+          <div className={styles.main_test}>
+            <button
+              className={styles.main_mobileEditBtnModal}
+              onClick={() => {
+                if (profile?.userProfile !== 0) {
+                  dispatch(setOpenNewPost());
+                  dispatch(resetOpenProfile());
+                } else {
+                  dispatch(setOpenSignUp());
+                }
+              }}
+            >
+              <FaEdit />
+            </button>
+          </div>
+          {profile?.userProfile !== 0 ? (
+            <>
+              <div className={styles.main_logout}>
+                {(isLoadingPost || isLoadingAuth) && <CircularProgress />}
+                <Button
+                  onClick={() => {
+                    localStorage.removeItem("localJWT");
+                    dispatch(editUserProfile());
+                    dispatch(editNickname(""));
+                    dispatch(resetOpenProfile());
+                    dispatch(resetOpenNewPost());
+                    dispatch(setOpenSignIn());
+                  }}
+                >
+                  Logout
+                </Button>
+                <button
+                  className={styles.main_btnModal}
+                  onClick={() => {
+                    dispatch(setOpenProfile());
+                    dispatch(resetOpenNewPost());
+                  }}
+                >
+                  <StyledBadge
+                    overlap="circle"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    variant="dot"
+                  >
+                    <Avatar alt="who?" src={profile.img} />
+                    {""}
+                  </StyledBadge>
+                </button>
+              </div>
+            </>
+          ) : (
+            <div>
               <Button
                 onClick={() => {
-                  localStorage.removeItem("localJWT");
-                  dispatch(editUserProfile());
-                  dispatch(editNickname(""));
-                  dispatch(resetOpenProfile());
-                  dispatch(resetOpenNewPost());
                   dispatch(setOpenSignIn());
+                  dispatch(resetOpenSignUp());
                 }}
               >
-                Logout
+                Login
               </Button>
-              <button
-                className={styles.main_btnModal}
+              <Button
                 onClick={() => {
-                  dispatch(setOpenProfile());
-                  dispatch(resetOpenNewPost());
+                  dispatch(setOpenSignUp());
+                  dispatch(resetOpenSignIn());
                 }}
               >
-                <StyledBadge
-                  overlap="circle"
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  variant="dot"
-                >
-                  <Avatar alt="who?" src={profile.img} />
-                  {""}
-                </StyledBadge>
-              </button>
+                SignUp
+              </Button>
             </div>
-          </>
-        ) : (
-          <div>
-            <Button
+          )}
+        </div>
+      </MediaQuery>
+      <MediaQuery query="(min-width: 420px)">
+        <div className={styles.main_header}>
+          <button
+            className={styles.main_app_name}
+            onClick={() => {
+              window.scroll({ top: 0, behavior: "smooth" });
+            }}
+          >
+            karaimonoyasan
+          </button>
+          <div className={styles.main_test}>
+            <button
+              className={styles.main_editBtnModal}
               onClick={() => {
-                dispatch(setOpenSignIn());
-                dispatch(resetOpenSignUp());
+                if (profile?.userProfile !== 0) {
+                  dispatch(setOpenNewPost());
+                  dispatch(resetOpenProfile());
+                } else {
+                  dispatch(setOpenSignUp());
+                }
               }}
             >
-              Login
-            </Button>
-            <Button
-              onClick={() => {
-                dispatch(setOpenSignUp());
-                dispatch(resetOpenSignIn());
-              }}
-            >
-              SignUp
-            </Button>
+              <FaEdit />
+            </button>
           </div>
-        )}
-      </div>
+          {profile?.userProfile !== 0 ? (
+            <>
+              <div className={styles.main_logout}>
+                {(isLoadingPost || isLoadingAuth) && <CircularProgress />}
+                <Button
+                  onClick={() => {
+                    localStorage.removeItem("localJWT");
+                    dispatch(editUserProfile());
+                    dispatch(editNickname(""));
+                    dispatch(resetOpenProfile());
+                    dispatch(resetOpenNewPost());
+                    dispatch(setOpenSignIn());
+                  }}
+                >
+                  Logout
+                </Button>
+                <button
+                  className={styles.main_btnModal}
+                  onClick={() => {
+                    dispatch(setOpenProfile());
+                    dispatch(resetOpenNewPost());
+                  }}
+                >
+                  <StyledBadge
+                    overlap="circle"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    variant="dot"
+                  >
+                    <Avatar alt="who?" src={profile.img} />
+                    {""}
+                  </StyledBadge>
+                </button>
+              </div>
+            </>
+          ) : (
+            <div>
+              <Button
+                onClick={() => {
+                  dispatch(setOpenSignIn());
+                  dispatch(resetOpenSignUp());
+                }}
+              >
+                Login
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatch(setOpenSignUp());
+                  dispatch(resetOpenSignIn());
+                }}
+              >
+                SignUp
+              </Button>
+            </div>
+          )}
+        </div>
+      </MediaQuery>
+
       <div className={styles.main_posts}>
         <Grid container spacing={2}>
           {posts
