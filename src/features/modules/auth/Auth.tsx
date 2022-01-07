@@ -1,10 +1,8 @@
 import React from "react";
 // 型のインポート
 import { AppDispatch } from "../../../app/store";
-// useSelector: stateにアクセスするために必要
-// useDispatch: storeにアクセスするために必要
 import { useSelector, useDispatch } from "react-redux";
-import styles from "./Auth.module.css";
+import styles from "./Auth.module.scss";
 // モーダル使用
 import Modal from "react-modal";
 // 入力フォーム作成で使用
@@ -42,12 +40,13 @@ import {
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(119, 119, 119, 0.5)",
+    zIndex: 1000,
   },
   content: {
     top: "55%",
     left: "50%",
     width: 280,
-    height: 350,
+    height: 430,
     padding: "50px",
     transform: "translate(-50%, -50%)",
   },
@@ -63,6 +62,11 @@ const Auth: React.FC = () => {
   // isLoadingAuthのstateを取得することができる
   const isLoadingAuth = useSelector(selectIsLoadingAuth);
   const dispatch: AppDispatch = useDispatch();
+
+  const handlerResetModal = () => {
+    dispatch(resetOpenSignUp());
+    dispatch(resetOpenSignIn());
+  };
 
   return (
     <>
@@ -110,7 +114,7 @@ const Auth: React.FC = () => {
             <div>
               <form onSubmit={handleSubmit}>
                 <div className={styles.auth_signUp}>
-                  <h1 className={styles.auth_title}>SNS clone</h1>
+                  <h1 className={styles.auth_title}>Sign Up</h1>
                   <br />
                   <div className={styles.auth_progress}>
                     {isLoadingAuth && <CircularProgress />}
@@ -152,6 +156,13 @@ const Auth: React.FC = () => {
                     Register
                   </Button>
                   <br />
+                  <Button
+                    color="secondary"
+                    type="reset"
+                    onClick={handlerResetModal}
+                  >
+                    Cancel
+                  </Button>
                   <br />
                   <span
                     className={styles.auth_text}
@@ -209,7 +220,7 @@ const Auth: React.FC = () => {
             <div>
               <form onSubmit={handleSubmit}>
                 <div className={styles.auth_signUp}>
-                  <h1 className={styles.auth_title}>SNS clone</h1>
+                  <h1 className={styles.auth_title}>Login</h1>
                   <br />
                   <div className={styles.auth_progress}>
                     {isLoadingAuth && <CircularProgress />}
@@ -250,6 +261,13 @@ const Auth: React.FC = () => {
                     Login
                   </Button>
                   <br />
+                  <Button
+                    color="secondary"
+                    type="reset"
+                    onClick={handlerResetModal}
+                  >
+                    Cancel
+                  </Button>
                   <br />
                   <span
                     className={styles.auth_text}

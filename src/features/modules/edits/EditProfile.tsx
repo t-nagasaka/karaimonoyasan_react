@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import styles from "../main/Main.module.css";
+import styles from "../main/Main.module.scss";
 
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
@@ -19,6 +19,7 @@ import {
 
 import { Button, TextField, IconButton } from "@material-ui/core";
 import { MdAddAPhoto } from "react-icons/md";
+import { string } from "yup";
 
 const customStyles = {
   content: {
@@ -26,7 +27,7 @@ const customStyles = {
     left: "50%",
 
     width: 280,
-    height: 220,
+    height: 320,
     padding: "50px",
 
     transform: "translate(-50%, -50%)",
@@ -38,6 +39,7 @@ const EditProfile: React.FC = () => {
   const openProfile = useSelector(selectOpenProfile);
   const profile = useSelector(selectProfile);
   const [image, setImage] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<String>("");
 
   const updateProfile = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -59,13 +61,17 @@ const EditProfile: React.FC = () => {
     fileInput?.click();
   };
 
+  const handlerResetPicture = () => {
+    setImage(null);
+    setFileName("");
+    dispatch(resetOpenProfile());
+  };
+
   return (
     <>
       <Modal
         isOpen={openProfile}
-        onRequestClose={async () => {
-          await dispatch(resetOpenProfile());
-        }}
+        onRequestClose={handlerResetPicture}
         style={customStyles}
       >
         <form className={styles.main_signUp}>
@@ -83,12 +89,16 @@ const EditProfile: React.FC = () => {
             type="file"
             id="imageInput"
             hidden={true}
-            onChange={(e) => setImage(e.target.files![0])}
+            onChange={(e) => {
+              setImage(e.target.files![0]);
+              setFileName(e.target.files![0].name);
+            }}
           />
           <br />
           <IconButton onClick={handlerEditPicture}>
             <MdAddAPhoto />
           </IconButton>
+          <p className={styles.main_profile_img}>{fileName}</p>
           <br />
           <Button
             disabled={!profile?.nickName}
@@ -98,6 +108,10 @@ const EditProfile: React.FC = () => {
             onClick={updateProfile}
           >
             Update
+          </Button>
+          <br />
+          <Button color="secondary" type="reset" onClick={handlerResetPicture}>
+            Cancel
           </Button>
         </form>
       </Modal>

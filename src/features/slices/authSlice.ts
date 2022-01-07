@@ -81,7 +81,7 @@ export const fetchAsyncGetMyProf = createAsyncThunk("profile/get", async () => {
 export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
   const res = await axios.get(`${apiUrl}api/profile/`, {
     headers: {
-      Authorization: `JWT ${localStorage.localJWT}`,
+      "Content-Type": "application/json",
     },
   });
   return res.data;
@@ -90,7 +90,7 @@ export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
-    openSignIn: true,
+    openSignIn: false,
     openSignUp: false,
     openProfile: false,
     isLoadingAuth: false,
@@ -141,6 +141,9 @@ export const authSlice = createSlice({
     editNickname(state, action) {
       state.myProfile.nickName = action.payload;
     },
+    editUserProfile(state) {
+      state.myProfile.userProfile = 0;
+    },
     editSpicyResist(state, action) {
       state.myProfile.spicyResist = action.payload;
     },
@@ -177,6 +180,7 @@ export const {
   setOpenProfile,
   resetOpenProfile,
   editNickname,
+  editUserProfile,
   editSpicyResist,
 } = authSlice.actions;
 

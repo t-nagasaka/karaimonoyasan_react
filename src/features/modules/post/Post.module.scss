@@ -1,0 +1,145 @@
+.post {
+  background-color: white;
+  max-width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.post_header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+.post_avatar {
+  margin-right: 10px;
+  z-index: 0;
+}
+.post_image {
+  width: 100%;
+  height: 280px;
+  object-fit: contain;
+}
+.post_text {
+  font-weight: normal;
+  padding: 10px;
+  word-break: break-all;
+}
+
+.post_checkBox {
+  z-index: 0;
+}
+.post_avatarGroup {
+  z-index: 0 !important;
+}
+.post_comments {
+  padding: 15px;
+}
+.post_comment {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  // word-wrap: normal;
+  // word-break: break-all;
+}
+.post_commentBox {
+  display: flex;
+  margin-top: 10px;
+}
+.post_input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-top: 1px solid lightgray;
+  border-radius: 0 0 0 10px;
+}
+.post_button {
+  flex: 0;
+  border: none;
+  color: #4682b4;
+  background-color: transparent;
+  border-top: 1px solid lightgray;
+  cursor: pointer;
+}
+.post_strong {
+  margin-right: 5px;
+}
+
+.taskIcon {
+  margin-top: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  color: rgb(95, 95, 95);
+  // margin-right: 20px;
+  /*波紋の基点とするためrelativeを指定*/
+  position: relative;
+  /*はみ出す波紋を隠す*/
+  overflow: hidden;
+  /*ボタンの形状*/
+  &:hover {
+    color: rgb(53, 53, 53);
+  }
+  &::after {
+    content: "";
+    /*絶対配置で波紋位置を決める*/
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    /*波紋の形状*/
+    background: radial-gradient(circle, #fff 10%, transparent 10%) no-repeat 50%;
+    transform: scale(10, 10);
+    /*はじめは透過0に*/
+    opacity: 0;
+    /*アニメーションの設定*/
+    transition: transform 0.3s, opacity 1s;
+  }
+  &:active::after {
+    transform: scale(0, 0);
+    transition: 0s;
+    opacity: 0.3;
+  }
+}
+
+.commentTrash {
+  margin-top: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  color: rgb(95, 95, 95);
+  padding-right: 15px;
+  /*波紋の基点とするためrelativeを指定*/
+  position: relative;
+  /*はみ出す波紋を隠す*/
+  overflow: hidden;
+  /*ボタンの形状*/
+  &:hover {
+    color: rgb(53, 53, 53);
+  }
+  &::after {
+    content: "";
+    /*絶対配置で波紋位置を決める*/
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    /*波紋の形状*/
+    background: radial-gradient(circle, #fff 10%, transparent 10%) no-repeat 50%;
+    transform: scale(10, 10);
+    /*はじめは透過0に*/
+    opacity: 0;
+    /*アニメーションの設定*/
+    transition: transform 0.3s, opacity 1s;
+  }
+  &:active::after {
+    transform: scale(0, 0);
+    transition: 0s;
+    opacity: 0.3;
+  }
+}

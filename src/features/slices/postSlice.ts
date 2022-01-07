@@ -6,6 +6,7 @@ import {
   PROPS_LIKED,
   PROPS_COMMENT,
 } from "../types/postSliceType";
+import { PROPS_POST } from "../types/PostType";
 
 // !DjangoのUrlパスを環境変数で指定
 const apiUrlPost = `${process.env.REACT_APP_DEV_API_URL}api/post/`;
@@ -80,7 +81,8 @@ export const fetchAsyncGetComments = createAsyncThunk(
   async () => {
     const res = await axios.get(apiUrlComment, {
       headers: {
-        Authorization: `JWT ${localStorage.localJWT}`,
+        "Content-Type": "application/json",
+        // Authorization: `JWT ${localStorage.localJWT}`,
       },
     });
     return res.data;
@@ -91,6 +93,30 @@ export const fetchAsyncPostComment = createAsyncThunk(
   "comment/post",
   async (comment: PROPS_COMMENT) => {
     const res = await axios.post(apiUrlComment, comment, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  }
+);
+
+export const fetchAsyncDeleteComment = createAsyncThunk(
+  "comment/delete",
+  async (commentId: string) => {
+    const res = await axios.delete(`${apiUrlComment}${commentId}/`, {
+      headers: {
+        Authorization: `JWT ${localStorage.localJWT}`,
+      },
+    });
+    return res.data;
+  }
+);
+
+export const fetchAsyncDeletePost = createAsyncThunk(
+  "post/delete",
+  async (postId: string) => {
+    const res = await axios.delete(`${apiUrlPost}${postId}/`, {
       headers: {
         Authorization: `JWT ${localStorage.localJWT}`,
       },

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Post.module.css";
+import styles from "./Post.module.scss";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Divider, Checkbox } from "@material-ui/core";
@@ -10,14 +10,24 @@ import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 
-import { selectProfiles } from "../../slices/authSlice";
+import {
+  selectProfile,
+  selectProfiles,
+  setOpenSignUp,
+} from "../../slices/authSlice";
+
+import { BsTrash } from "react-icons/bs";
 
 import {
   selectComments,
   fetchPostStart,
   fetchPostEnd,
+  fetchAsyncGetPosts,
   fetchAsyncPostComment,
+  fetchAsyncGetComments,
   fetchAsyncPatchLiked,
+  fetchAsyncDeletePost,
+  fetchAsyncDeleteComment,
 } from "../../slices/postSlice";
 
 import { PROPS_POST } from "../../types/PostType";
@@ -41,6 +51,7 @@ const Post: React.FC<PROPS_POST> = ({
   const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const profiles = useSelector(selectProfiles);
+  const myProf = useSelector(selectProfile);
   const comments = useSelector(selectComments);
   const [text, setText] = useState("");
 
@@ -53,24 +64,45 @@ const Post: React.FC<PROPS_POST> = ({
   });
 
   const postComment = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    const packet = { text: text, post: postId };
-    await dispatch(fetchPostStart());
-    await dispatch(fetchAsyncPostComment(packet));
-    await dispatch(fetchPostEnd());
-    setText("");
+    if (loginId !== 0) {
+      e.preventDefault();
+      const packet = { text: text, post: postId };
+      await dispatch(fetchPostStart());
+      await dispatch(fetchAsyncPostComment(packet));
+      await dispatch(fetchPostEnd());
+      setText("");
+    } else {
+      setText("");
+      dispatch(setOpenSignUp());
+    }
   };
 
   const handlerLiked = async () => {
-    const packet = {
-      id: postId,
-      title: title,
-      current: liked,
-      new: loginId,
-    };
-    await dispatch(fetchPostStart());
-    await dispatch(fetchAsyncPatchLiked(packet));
-    await dispatch(fetchPostEnd());
+    if (loginId !== 0) {
+      const packet = {
+        id: postId,
+        title: title,
+        current: liked,
+        new: loginId,
+      };
+      await dispatch(fetchPostStart());
+      await dispatch(fetchAsyncPatchLiked(packet));
+      await dispatch(fetchPostEnd());
+    } else {
+      dispatch(setOpenSignUp());
+    }
+  };
+
+  const deleteOwnPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const postId = e.currentTarget.value;
+    await dispatch(fetchAsyncDeletePost(postId));
+    await dispatch(fetchAsyncGetPosts());
+  };
+
+  const deleteOwnComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const commentId = e.currentTarget.value;
+    await dispatch(fetchAsyncDeleteComment(commentId));
+    await dispatch(fetchAsyncGetComments());
   };
 
   if (title) {
@@ -79,9 +111,19 @@ const Post: React.FC<PROPS_POST> = ({
         <div className={styles.post_header}>
           <Avatar className={styles.post_avatar} src={prof[0]?.img} />
           <h3>{prof[0]?.nickName}</h3>
+          {myProf.userProfile === userPost ? (
+            <button
+              className={styles.taskIcon}
+              onClick={deleteOwnPost}
+              value={postId}
+            >
+              <BsTrash />
+            </button>
+          ) : (
+            ""
+          )}
         </div>
         <img className={styles.post_image} src={imageUrl} alt="" />
-
         <h4 className={styles.post_text}>
           <Checkbox
             className={styles.post_checkBox}
@@ -124,6 +166,17 @@ const Post: React.FC<PROPS_POST> = ({
                 </strong>
                 {comment.text}
               </p>
+              {myProf.userProfile === comment.userComment ? (
+                <button
+                  className={styles.commentTrash}
+                  onClick={deleteOwnComment}
+                  value={comment.id}
+                >
+                  <BsTrash />
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           ))}
         </div>
@@ -139,7 +192,7 @@ const Post: React.FC<PROPS_POST> = ({
           <button
             disabled={!text.length}
             className={styles.post_button}
-            type="submit"
+            type={loginId !== 0 ? "submit" : "button"}
             onClick={postComment}
           >
             Post

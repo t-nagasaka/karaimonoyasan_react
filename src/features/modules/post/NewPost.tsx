@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 
-import styles from "../main/Main.module.css";
+import styles from "../main/Main.module.scss";
 
 import { File } from "../../types/editProfile";
 
@@ -24,7 +24,7 @@ const customStyles = {
     left: "50%",
 
     width: 280,
-    height: 220,
+    height: 320,
     padding: "50px",
 
     transform: "translate(-50%, -50%)",
@@ -38,6 +38,7 @@ const NewPost: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [spicyResist, setSpicyResist] = useState("");
+  const [fileName, setFileName] = useState<String>("");
 
   const handlerEditPicture = () => {
     const fileInput = document.getElementById("imageInput");
@@ -55,13 +56,18 @@ const NewPost: React.FC = () => {
     dispatch(resetOpenNewPost());
   };
 
+  const handlerResetPicture = () => {
+    setTitle("");
+    setImage(null);
+    setFileName("");
+    dispatch(resetOpenNewPost());
+  };
+
   return (
     <>
       <Modal
         isOpen={openNewPost}
-        onRequestClose={async () => {
-          await dispatch(resetOpenNewPost());
-        }}
+        onRequestClose={handlerResetPicture}
         style={customStyles}
       >
         <form className={styles.main_signUp}>
@@ -78,12 +84,16 @@ const NewPost: React.FC = () => {
             type="file"
             id="imageInput"
             hidden={true}
-            onChange={(e) => setImage(e.target.files![0])}
+            onChange={(e) => {
+              setImage(e.target.files![0]);
+              setFileName(e.target.files![0].name);
+            }}
           />
           <br />
           <IconButton onClick={handlerEditPicture}>
             <MdAddAPhoto />
           </IconButton>
+          <p className={styles.main_profile_img}>{fileName}</p>
           <br />
           <Button
             disabled={!title || !image}
@@ -92,6 +102,10 @@ const NewPost: React.FC = () => {
             onClick={newPost}
           >
             New post
+          </Button>
+          <br />
+          <Button color="secondary" type="reset" onClick={handlerResetPicture}>
+            Cancel
           </Button>
         </form>
       </Modal>
