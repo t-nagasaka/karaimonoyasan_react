@@ -11,10 +11,11 @@
   font-family: "Playball", cursive;
   font-weight: normal;
   text-align: center;
-  font-size: 32px;
+  font-size: 1.2rem;
   background-color: white;
   border: none;
   cursor: pointer;
+  color: red;
 }
 
 .main_title {
@@ -23,6 +24,7 @@
   text-align: center;
   padding-bottom: 20px;
 }
+
 .main_signUp {
   display: flex;
   flex-direction: column;
@@ -38,11 +40,24 @@
   top: 0;
   background-color: white;
   padding: 20px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid red;
   object-fit: contain;
   display: flex;
   z-index: 1;
   justify-content: space-between;
+}
+
+.main_mobileHeader {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  padding: 20px;
+  border-bottom: 1px solid red;
+  object-fit: contain;
+  display: flex;
+  z-index: 1;
+  justify-content: space-between;
+  padding-bottom: 70px;
 }
 
 .main_btnModal {
@@ -137,6 +152,81 @@ ul {
   display: inline-block;
   // background: #333;
   font-size: 25px;
+  padding-top: 5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: #ccc;
+  outline: none;
+  cursor: pointer;
+  /*アニメーションの設定*/
+  transition: all 0.3s;
+  /*hoverした際の背景色の設定*/
+  &:hover {
+    background: #666;
+  }
+
+  /*波形を2つ設定*/
+  &::after,
+  &::before {
+    content: "";
+    /*絶対配置で波形の位置を決める*/
+    position: absolute;
+    left: -27%;
+    top: -28%;
+    /*波形の形状*/
+    border: 1px solid #333;
+    width: 150%;
+    height: 150%;
+    border-radius: 50%;
+    /*はじめは不透明*/
+    opacity: 1;
+    /*ループするアニメーションの設定*/
+    animation: 1s circleanime linear infinite;
+  }
+
+  /*波形の2つ目は0.5秒遅らせてアニメーション*/
+  &::before {
+    animation-delay: 0.5s;
+  }
+
+  /*中央矢印*/
+  &span::after {
+    content: "";
+    /*絶対配置で矢印の位置を決める*/
+    position: absolute;
+    top: 38%;
+    left: 45%;
+    /*矢印の形状*/
+    border: 14px solid transparent;
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    border-left-color: #fff;
+  }
+}
+/*波形のアニメーション*/
+@keyframes circleanime {
+  0% {
+    transform: scale(0.68);
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.main_profile_img {
+  text-align: center;
+}
+
+.main_mobileEditBtnModal {
+  /*波紋の基点とするためrelativeを指定*/
+  position: relative;
+  /*波紋の形状*/
+  display: inline-block;
+  // background: #333;
+  font-size: 25px;
+  margin-top: 32px;
   padding-top: 5px;
   width: 45px;
   height: 45px;
